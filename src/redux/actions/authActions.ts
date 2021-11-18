@@ -8,6 +8,7 @@ import {
   browserLocalPersistence,
   signInWithPopup,
   sendPasswordResetEmail,
+  signOut,
 } from 'firebase/auth';
 
 import { IRegister, ILogin } from './../../types/index';
@@ -72,6 +73,14 @@ export const forgotPasswordApi = async (email: string) => {
     await sendPasswordResetEmail(auth, email);
 
     return toast.success('Success! Please check your email');
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+};
+
+export const signOutApi = async () => {
+  try {
+    await signOut(auth);
   } catch (err: any) {
     return toast.error(err.message);
   }

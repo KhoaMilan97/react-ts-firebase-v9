@@ -1,11 +1,18 @@
-import Registerform from 'components/auth/Registerform';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { BigLoading } from 'components/global/Loading';
 import { useAppSelector } from 'hooks';
+import Registerform from 'components/auth/Registerform';
 
 const Register: React.FC = () => {
   const loading = useAppSelector((state) => state.auth.loading);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) return navigate('/', { replace: true });
+  }, [navigate, currentUser]);
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-6rem)] ">

@@ -5,7 +5,7 @@ import {
   sendEmailVerification,
   signOut,
 } from '@firebase/auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import PageRender from './PageRender';
 import Header from './components/header';
@@ -13,10 +13,12 @@ import { auth } from 'Firebase.init';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from 'hooks';
 import { addUser } from 'redux/slice/authSlice';
+import { BigLoading } from 'components/global/Loading';
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -27,17 +29,26 @@ function App() {
         );
         if (!user.emailVerified && providerId) {
           await sendEmailVerification(user);
+          setLoading(false);
           await signOut(auth);
-          navigate('/email_verified', { replace: true });
+          navigate('/email_verified');
           return;
         }
 
         dispatch(addUser(user));
+        setLoading(false);
+      } else {
+        dispatch(addUser(undefined));
+        setLoading(false);
+        //navigate('/login')
+        return;
       }
     });
 
-    return unsubscribe();
+    return unsubscribe;
   }, [navigate, dispatch]);
+
+  if (loading) return <BigLoading />;
 
   return (
     <>
