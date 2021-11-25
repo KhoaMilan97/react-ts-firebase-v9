@@ -6,32 +6,26 @@ import {
   forgotPasswordApi,
   signOutApi,
 } from 'redux/actions/authActions';
-import { IRegister, ILogin } from './../../types/index';
+import { IRegister, ILogin, IAuth } from './../../types/index';
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export interface AuthState {
-  currentUser?: any;
+  currentUser?: IAuth;
   loading: boolean;
 }
 
 const initialState: AuthState = {
-  currentUser: '',
+  currentUser: undefined,
   loading: false,
 };
 
-export const authRegister = createAsyncThunk(
-  'auth/register',
-  async (user: IRegister) => {
-    return await registerApi(user);
-  }
-);
+export const authRegister = createAsyncThunk('auth/register', async (user: IRegister) => {
+  return await registerApi(user);
+});
 
-export const authLogin = createAsyncThunk(
-  'auth/login',
-  async (user: ILogin) => {
-    return await loginApi(user);
-  }
-);
+export const authLogin = createAsyncThunk('auth/login', async (user: ILogin) => {
+  return await loginApi(user);
+});
 
 export const googleLogin = createAsyncThunk('auth/google', async () => {
   return await googleApi();

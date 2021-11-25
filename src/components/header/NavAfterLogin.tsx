@@ -13,19 +13,13 @@ const NavAfterLogin: React.FC = () => {
     <div className="flex items-center">
       <Link to="/profile" replace className="flex items-center">
         <div className="w-10 h-10 overflow-hidden rounded-full">
-          {currentUser.photoURL ? (
-            <img
-              src={currentUser.photoURL}
-              alt="avatar"
-              className="object-cover w-full h-full"
-            />
+          {currentUser?.photoURL ? (
+            <img src={currentUser?.photoURL} alt="avatar" className="object-cover w-full h-full" />
           ) : (
             <UserCircleIcon className="w-full h-full" />
           )}
         </div>
-        <span className="mr-4 font-semibold capitalize">
-          {currentUser.displayName}
-        </span>
+        <span className="mr-4 font-semibold capitalize">{currentUser?.displayName}</span>
       </Link>
       <button
         onClick={() => {
